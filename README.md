@@ -72,7 +72,7 @@ The default structure of a Django project includes the following components:
 - **recipe_management_api/**: The main project directory containing:
   - **manage.py**: A command-line utility for interacting with the project.
   - **recipe_management_api/** (inner folder): The actual project code, containing:
-    - ****init**.py**: Indicates that this directory should be treated as a Python package.
+    - \***\*init**.py\*\*: Indicates that this directory should be treated as a Python package.
     - **settings.py**: Contains settings and configuration for the project.
     - **urls.py**: Defines the URL patterns for the project.
     - **wsgi.py**: An entry point for WSGI-compatible web servers to serve your project.
@@ -80,4 +80,25 @@ The default structure of a Django project includes the following components:
 
 ## Next Steps
 
-After setting up your project, you can start building Django applications, define models, and create views to render data to users.
+Setup and register `api` application
+
+### Step 1: Create a New Django Application
+
+1. Run the following command to create a new Django application named api:
+   ```bash
+   python3 manage.py startapp api
+   ```
+2. Go the `recipe_management_api/settings.py` file and register your application by adding the `api` app to your INSTALLED_APPS
+   ```bash
+   INSTALLED_APPS = [
+    ...
+    'api',
+   ]
+   ```
+
+## Testing of user endpoint with Postman
+
+Click on the links below to see a screenshot of the Postman preview
+
+- [POST api/users/](https://drive.google.com/file/d/17YhOcJd__Dbh2VdtgGhcMrggwnzXQvd7/view?usp=drive_link)
+- [GET api/users/{id}/](https://drive.google.com/file/d/1xdYKsv1Kyd30TKtabHsYghHVKOLoXvCV/view?usp=sharing)
