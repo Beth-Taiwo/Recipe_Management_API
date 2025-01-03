@@ -7,4 +7,5 @@ urlpatterns = [
     path('test_token', views.test_token),
     path('users', views.get_users, name="users"),
     path('users/<int:pk>', views.get_users_by_id),
+    path('user/<int:pk>', views.update_user),
 ]

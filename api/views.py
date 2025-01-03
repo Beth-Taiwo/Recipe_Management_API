@@ -10,7 +10,6 @@ from .serializers import UserSerializer
 
 @api_view(['POST'])
 def signup(request):
-    print('well')
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -50,3 +49,13 @@ def get_users_by_id(request, pk):
     user = get_object_or_404(User, pk=pk)
     serializer = UserSerializer(user)
     return Response(serializer.data)
+
+
+@api_view(['PATCH'])
+def update_user(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    serializer = UserSerializer(user, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
