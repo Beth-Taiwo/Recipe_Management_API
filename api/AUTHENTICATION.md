@@ -4,7 +4,7 @@ This API uses token-based authentication to secure its endpoints. Here is how to
 
 ## User Registration
 
-**Endpoint:** `POST /api/users/`
+**Endpoint:** `POST /api/signup`
 
 **Request Parameters:**
 
@@ -30,7 +30,7 @@ This API uses token-based authentication to secure its endpoints. Here is how to
 
 ## User Login
 
-**Endpoint:** `POST /api/users/login/`
+**Endpoint:** `POST /api/login`
 
 **Request Parameters:**
 
@@ -48,6 +48,11 @@ This API uses token-based authentication to secure its endpoints. Here is how to
 - Body:
   ```json
   {
-    "token": "string"
+    "user": {
+      "token": "string",
+      "id": "number",
+      "username": "string",
+      "password": "string"
+    }
   }
   ```
