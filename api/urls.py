@@ -9,4 +9,10 @@ urlpatterns = [
     path('users/<int:pk>', views.get_users_by_id),
     path('user/<int:pk>', views.update_user),
     path('user/delete/<int:pk>', views.delete_user),
+    path('categories', views.CategoryViewSet.as_view({'get': 'list', 'post': 'create'}), name='categories'),
+    path('ingredients', views.IngredientViewSet.as_view({'get': 'list', 'post': 'create'}), name='ingredients'),
+    path('recipes', views.RecipeViewSet.as_view({'get': 'list', 'post': 'create'}), name='recipes'),
+    path('recipe/<int:pk>', views.RecipeViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='recipe'),
+    # path('recipe/<int:pk>/ingredients', views.RecipeIngredientViewSet.as_view({'get': 'list', 'post': 'create'}), name='recipe-ingredients'),
+    # path('recipe/ingredient/<int:pk>', views.RecipeIngredientViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='recipe-ingredient'),
 ]
