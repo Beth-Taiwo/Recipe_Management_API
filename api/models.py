@@ -17,7 +17,6 @@ class Category(models.Model):
 class Ingredient(models.Model):
     name = models.CharField(max_length=100)
     unit = models.CharField(max_length=50, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.name
@@ -31,8 +30,8 @@ class Recipe(models.Model):
     servings = models.IntegerField()
     created_date = models.DateTimeField(auto_now=True)
     ingredients = models.ManyToManyField(Ingredient, through="RecipeIngredient")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=False)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
     
     def __str__(self):
         return self.title
@@ -45,7 +44,7 @@ class Recipe(models.Model):
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()
+    # quantity = models.PositiveIntegerField()
     unit = models.CharField(max_length=50, blank=True)
     
     def __str__(self):

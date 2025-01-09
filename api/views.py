@@ -75,8 +75,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
         
 
 class IngredientViewSet(viewsets.ModelViewSet):
@@ -85,8 +87,11 @@ class IngredientViewSet(viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        # print(instance)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -95,6 +100,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
     
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-        
+    # def retrieve(self, request, *args, **kwargs):
+    #     params = kwargs
+    #     ingredient = Recipe.objects.filter(ingredients=params['pk'])
+    #     print(ingredient)
+    #     serializer = RecipeSerializer(ingredient, many=True)
+    #     return Response(serializer.data)
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        print(instance)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
