@@ -34,13 +34,8 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
 
 class RecipeSerializer(serializers.ModelSerializer):
     ingredients = serializers.PrimaryKeyRelatedField(queryset=Ingredient.objects.all(), many=True)
-    category = serializers.PrimaryKeyRelatedField(
-        queryset=Category.objects.all()  # Allow category selection
-    )
-    course = serializers.PrimaryKeyRelatedField(
-        queryset=Course.objects.all(),
-        required=False  
-    )
+    category = serializers.StringRelatedField()
+    course = serializers.StringRelatedField()
     
     class Meta:
         model = Recipe
