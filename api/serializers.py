@@ -18,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name']
+        fields = '__all__'
         
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,8 +34,13 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
 
 class RecipeSerializer(serializers.ModelSerializer):
     ingredients = serializers.PrimaryKeyRelatedField(queryset=Ingredient.objects.all(), many=True)
-    category = serializers.StringRelatedField()
-    course = serializers.StringRelatedField()
+    category = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all()  # Allow category selection
+    )
+    course = serializers.PrimaryKeyRelatedField(
+        queryset=Course.objects.all(),
+        required=False  
+    )
     
     class Meta:
         model = Recipe
@@ -50,4 +55,5 @@ class RecipeSerializer(serializers.ModelSerializer):
         representation['ingredients'] = IngredientSerializer(
             instance.ingredients.all(), many=True
         ).data
+        representation['category'] = instance.category.name
         return representation
