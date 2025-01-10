@@ -102,3 +102,7 @@ Click on the links below to see a screenshot of the Postman preview
 
 - [POST api/users/](https://drive.google.com/file/d/17YhOcJd__Dbh2VdtgGhcMrggwnzXQvd7/view?usp=drive_link)
 - [GET api/users/{id}/](https://drive.google.com/file/d/1xdYKsv1Kyd30TKtabHsYghHVKOLoXvCV/view?usp=sharing)
+
+## API Documentation
+
+The full API documentation is available [here](docs/Receipe%20management%20api.postman_collection.json).
