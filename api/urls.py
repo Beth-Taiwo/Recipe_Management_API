@@ -18,6 +18,8 @@ urlpatterns = [
     path('user/<int:pk>', views.update_user),
     path('user/delete/<int:pk>', views.delete_user),
     path('', include(router.urls)),
-    path('recipes/category/<str:category>/', views.RecipesByCategoryView.as_view(), name='recipes-by-category'),
-    path('recipes/ingredient/<str:ingredient>/', views.RecipeByIngredientView.as_view(), name='recipes-by-ingredient'),
+    path('recipes/category/<str:category>', views.RecipesByCategoryView.as_view(), name='recipes-by-category'),
+    path('recipes/ingredient/<str:ingredient>', views.RecipeByIngredientView.as_view(), name='recipes-by-ingredient'),
+    path('recipes/ingredients', views.RecipesByMultipleIngredientsView.as_view(), name='recipes-by-multiple-ingredients'),
+    path('recipes/search', views.RecipeSearchView.as_view(), name='recipe-search'),
   ]

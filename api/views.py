@@ -12,6 +12,11 @@ from .models import Recipe, Category, Ingredient, RecipeIngredient
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.generics import ListAPIView
 from django.utils.text import slugify
+from django.db.models import Count
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+
+
 
 @api_view(['POST'])
 def signup(request):
@@ -172,3 +177,39 @@ class RecipeByIngredientView(ListAPIView):
         ]
         
         return filtered_recipes
+
+# WIP
+class RecipesByMultipleIngredientsView(ListAPIView):
+    serializer_class = RecipeSerializer
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        print(self.request.query_params.get('ingredients', None),'got here')
+        # Retrieve the ingredients from the query parameters
+        ingredients_param = self.request.query_params.get('ingredients', None)
+        if not ingredients_param:
+            return Recipe.objects.none()  # Return an empty queryset if no ingredients are provided
+
+        # Split the ingredients into a list
+        ingredient_names = [ingredient.strip() for ingredient in ingredients_param.split(',')]
+
+        # Filter recipes that contain all the specified ingredients
+        return (
+            Recipe.objects.annotate(ingredient_count=Count('ingredients'))
+            .filter(ingredients__name__in=ingredient_names)
+            .distinct()
+            .filter(ingredient_count=len(ingredient_names))  # Ensure all specified ingredients are present
+        )
+        
+
+class RecipeSearchView(ListAPIView):
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
+    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
+    
+    # Allow ordering by fields like cooking_time, servings, etc.
+    ordering_fields = ['cooking_time', 'preparation_time', 'servings']
+    search_fields = ['title','category__name','ingredients__name','preparation_time']
+    filterset_fields= ['cooking_time', 'preparation_time', 'servings']
+    

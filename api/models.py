@@ -36,7 +36,7 @@ class Recipe(models.Model):
     
     def __str__(self):
         ingredients = ", ".join([ingredient.name for ingredient in self.ingredients.all()])
-        return f"{self.created_by} created the {self.title} recipe that belong in {self.category} category with the following {ingredients} ingredients"
+        return f"{self.created_by} created the {self.title} recipe that belong in {self.category} category with the following ingredients: {ingredients} "
     
     @property
     def total_time(self):
