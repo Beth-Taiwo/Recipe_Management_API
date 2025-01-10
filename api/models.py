@@ -29,13 +29,14 @@ class Recipe(models.Model):
     cooking_time = models.PositiveIntegerField(blank=True, default=0)
     servings = models.IntegerField(blank=True, default=0)
     created_date = models.DateTimeField(auto_now=True)
-    ingredients = models.ManyToManyField(Ingredient, through="RecipeIngredient", blank=False)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=False)
+    ingredients = models.ManyToManyField(Ingredient, through="RecipeIngredient", blank=False, related_name='recipes')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=False, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recipes")
     
     def __str__(self):
-        return f"{self.created_by} created the {self.title} recipe"
+        ingredients = ", ".join([ingredient.name for ingredient in self.ingredients.all()])
+        return f"{self.created_by} created the {self.title} recipe that belong in {self.category} category with the following {ingredients} ingredients"
     
     @property
     def total_time(self):

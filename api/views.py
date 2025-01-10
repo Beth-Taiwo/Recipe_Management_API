@@ -11,6 +11,7 @@ from rest_framework import viewsets
 from .models import Recipe, Category, Ingredient, RecipeIngredient
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.generics import ListAPIView
+from django.utils.text import slugify
 
 @api_view(['POST'])
 def signup(request):
@@ -116,6 +117,8 @@ class RecipesByCategoryView(ListAPIView):
     API endpoint to filter recipes by category.
     """
     serializer_class = RecipeSerializer
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         # Retrieve the category name from the URL
@@ -130,4 +133,42 @@ class RecipesByCategoryView(ListAPIView):
         # Filter recipes by the category's ID
         return Recipe.objects.filter(category=category)
     
-  
+
+class RecipeByIngredientView(ListAPIView):
+    """
+    API endpoint to filter recipes by category.
+    """
+    serializer_class = RecipeSerializer
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        # Retrieve the ingredient name from the URL
+        ingredient_name = self.kwargs['ingredient']
+        
+        # Get all recipes (assuming you have a method to retrieve them as a list of dictionaries)
+        all_recipes = self.get_all_recipes()
+      
+        # Filter recipes by the ingredient name
+        filtered_recipes = self.filter_recipes_by_ingredient(all_recipes, ingredient_name)
+           
+        return filtered_recipes
+
+    def get_all_recipes(self):
+        # Fetch all recipes and prefetch related ingredients
+        recipes = Recipe.objects.prefetch_related('ingredients')
+        return recipes
+    
+
+    def filter_recipes_by_ingredient(self, recipes, ingredient_name):
+        # Convert ingredient name to lowercase for case-insensitive comparison
+        ingredient_name_lower = ingredient_name.lower()
+        
+        # Filter recipes that contain the ingredient
+        filtered_recipes = [
+            recipe for recipe in recipes
+            if any(slugify(ingredient.name.lower()) == slugify(ingredient_name_lower)
+                   for ingredient in recipe.ingredients.all())
+        ]
+        
+        return filtered_recipes

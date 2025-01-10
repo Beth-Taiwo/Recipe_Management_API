@@ -19,6 +19,5 @@ urlpatterns = [
     path('user/delete/<int:pk>', views.delete_user),
     path('', include(router.urls)),
     path('recipes/category/<str:category>/', views.RecipesByCategoryView.as_view(), name='recipes-by-category'),
-     # path('recipe/<int:pk>/ingredients', views.RecipeIngredientViewSet.as_view({'get': 'list', 'post': 'create'}), name='recipe-ingredients'),
-    # path('recipe/ingredient/<int:pk>', views.RecipeIngredientViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='recipe-ingredient'),
-]
+    path('recipes/ingredient/<str:ingredient>/', views.RecipeByIngredientView.as_view(), name='recipes-by-ingredient'),
+  ]
