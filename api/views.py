@@ -9,6 +9,7 @@ from rest_framework.authtoken.models import Token
 from .serializers import UserSerializer, CategorySerializer,IngredientSerializer, RecipeSerializer
 from rest_framework import viewsets
 from .models import Recipe, Category, Ingredient, RecipeIngredient
+from .permissions import IsOwnerOrReadOnly
 
 @api_view(['POST'])
 def signup(request):
@@ -89,7 +90,6 @@ class IngredientViewSet(viewsets.ModelViewSet):
     
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        # print(instance)
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
@@ -98,7 +98,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+    
+    def perform_create(self, serializer):
+        # Automatically associate the created recipe with the logged-in user
+        serializer.save(created_by=self.request.user)
     
     # def retrieve(self, request, *args, **kwargs):
     #     params = kwargs
@@ -108,6 +112,5 @@ class RecipeViewSet(viewsets.ModelViewSet):
     #     return Response(serializer.data)
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        print(instance)
         serializer = self.get_serializer(instance)
         return Response(serializer.data)

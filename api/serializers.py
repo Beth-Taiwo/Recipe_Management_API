@@ -44,8 +44,8 @@ class RecipeSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Recipe
-        fields = ['id', 'title', 'description', 'instructions', 'preparation_time', 'cooking_time', 'servings', 'created_date', 'ingredients', 'category', 'course']
-
+        fields = '__all__'
+        read_only_fields = ['created_date', 'created_by']
     
     def to_representation(self, instance):
         """
