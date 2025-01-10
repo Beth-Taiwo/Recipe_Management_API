@@ -10,6 +10,7 @@ from .serializers import UserSerializer, CategorySerializer,IngredientSerializer
 from rest_framework import viewsets
 from .models import Recipe, Category, Ingredient, RecipeIngredient
 from .permissions import IsOwnerOrReadOnly
+from rest_framework.generics import ListAPIView
 
 @api_view(['POST'])
 def signup(request):
@@ -104,13 +105,29 @@ class RecipeViewSet(viewsets.ModelViewSet):
         # Automatically associate the created recipe with the logged-in user
         serializer.save(created_by=self.request.user)
     
-    # def retrieve(self, request, *args, **kwargs):
-    #     params = kwargs
-    #     ingredient = Recipe.objects.filter(ingredients=params['pk'])
-    #     print(ingredient)
-    #     serializer = RecipeSerializer(ingredient, many=True)
-    #     return Response(serializer.data)
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+    
+
+class RecipesByCategoryView(ListAPIView):
+    """
+    API endpoint to filter recipes by category.
+    """
+    serializer_class = RecipeSerializer
+    
+    def get_queryset(self):
+        # Retrieve the category name from the URL
+        category_name = self.kwargs['category']
+        # Look up the category object by name
+        try:
+            category = Category.objects.get(name__iexact=category_name)
+        except Category.DoesNotExist:
+            # Return an empty queryset if the category doesn't exist
+            return Recipe.objects.none()
+
+        # Filter recipes by the category's ID
+        return Recipe.objects.filter(category=category)
+    
+  
