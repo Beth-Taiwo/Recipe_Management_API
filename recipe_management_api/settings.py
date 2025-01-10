@@ -78,9 +78,13 @@ WSGI_APPLICATION = 'recipe_management_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'recipe_management_api',
+        'USER': 'root',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
+    
 }
 
 
