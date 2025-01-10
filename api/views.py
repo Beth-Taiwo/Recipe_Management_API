@@ -15,8 +15,12 @@ from django.utils.text import slugify
 from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.pagination import PageNumberPagination
 
-
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 2
+    page_size_query_param = 'page_size'
+    max_page_size = 10
 
 @api_view(['POST'])
 def signup(request):
@@ -106,6 +110,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     serializer_class = RecipeSerializer
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+    pagination_class = StandardResultsSetPagination
     
     def perform_create(self, serializer):
         # Automatically associate the created recipe with the logged-in user
@@ -212,4 +217,3 @@ class RecipeSearchView(ListAPIView):
     ordering_fields = ['cooking_time', 'preparation_time', 'servings']
     search_fields = ['title','category__name','ingredients__name','preparation_time']
     filterset_fields= ['cooking_time', 'preparation_time', 'servings']
-    
