@@ -116,6 +116,7 @@ This API provides functionality for managing recipes, users, and related operati
 - **Method:** POST
 - **URL:** `http://127.0.0.1:8000/api/signup`
 - **Body:**
+
   ```json
   {
     "username": "beth",
@@ -123,8 +124,6 @@ This API provides functionality for managing recipes, users, and related operati
     "password": "**********"
   }
   ```
-
-````
 
 - **Response:**
   - Status Code: 201 Created
@@ -371,7 +370,28 @@ This API provides functionality for managing recipes, users, and related operati
   - 401: Unauthorized
   - 404: Recipe not found
 
-### 10. Delete Recipe by ID
+### 10. Search for a specific recipe
+
+- **Method:** GET
+- **URL:** `http://127.0.0.1:8000/api/recipes/search?search=buns`
+- **Parameters:** `search=buns`
+- **Body:**
+  ```json
+  {
+    "name": "Add your name in the body"
+  }
+  ```
+- **Response:**
+  - Status Code: 200 OK
+  - Body:
+    ```json
+    []
+    ```
+- **Possible Status Codes:**
+  - 200: Success
+  - 401: Unauthorized
+
+### 11. Delete Recipe by ID
 
 - **Method:** DELETE
 - **URL:** `http://127.0.0.1:8000/api/recipes/{id}`
@@ -384,7 +404,7 @@ This API provides functionality for managing recipes, users, and related operati
   - 401: Unauthorized
   - 404: Recipe not found
 
-### 11. Update User Information
+### 12. Update User Information
 
 - **Method:** PATCH
 - **URL:** `http://127.0.0.1:8000/api/user/{id}`
@@ -419,4 +439,3 @@ This API provides functionality for managing recipes, users, and related operati
 - Unauthorized access attempts will return a 401 Unauthorized status.
 - For endpoints that involve specific resources (like a user or recipe by ID), a 404 Not Found status will be returned if the resource doesn't exist.
   on.json).
-````
